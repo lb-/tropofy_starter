@@ -11,9 +11,9 @@ from tropofy.widgets import KMLMap, SimpleGrid
 
 
 class Store(DataSetMixin):
-    name = Column(Text)
-    latitude = Column(Float)
-    longitude = Column(Float)
+    name = Column(Text, nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
 
 
 class MyKMLMap(KMLMap):
