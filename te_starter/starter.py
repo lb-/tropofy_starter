@@ -25,8 +25,8 @@ class Performance(DataSetMixin):
         nullable=False
     )
     year = Column(Integer, nullable=False)
-    sales = Column(Float, nullable=False)
-    expenses = Column(Float, nullable=False)
+    sales = Column(Float, nullable=False, default=0)
+    expenses = Column(Float, nullable=False, default=0)
 
 
 class MyKMLMap(KMLMap):
