@@ -8,6 +8,50 @@ from tropofy.database.tropofy_orm import DataSetMixin
 from tropofy.widgets import KMLMap, SimpleGrid
 
 
+class PeformanceBarChart(Chart):
+    def get_chart_type(self, app_session):
+        return Chart.BARCHART
+
+    def get_table_schema(self, app_session):
+        return {
+            'year': ('string', 'Year'),
+            'sales': ('number', 'Sales'),
+            'expenses': ('number', 'expenses'),
+        }
+
+    def get_table_data(self, app_session):
+        results = []
+        years = [
+            year for row in
+            app_session.data_set.query(Performance.year).distinct()
+            for year in row
+        ]
+        for year in years:
+            performances = app_session.data_set.query(
+                Performance).filter_by(year=year)
+            results.append({
+                'year': year,
+                'sales': sum(p.sales for p in performances),
+                'expenses': sum(p.expenses for p in performances)
+            })
+        return results
+
+    def get_column_ordering(self, app_session):
+        return ['year', 'sales', 'expenses']
+
+    def get_order_by_column(self, app_session):
+        return 'year'
+
+    def get_chart_options(self, app_session):
+        return {
+            'title': 'Company Performance',
+            'vAxis': {
+                'title': 'year',
+                'titleTextStyle': {'color': 'red'}
+            }
+        }
+
+
 class Store(DataSetMixin):
     name = Column(Text, nullable=False)
     latitude = Column(Float, nullable=False)
