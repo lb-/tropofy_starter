@@ -1,9 +1,7 @@
-from collections import OrderedDict
-
 from simplekml import Kml
 
-from sqlalchemy.schema import Column
-from sqlalchemy.types import Float, Text
+from sqlalchemy.schema import Column, ForeignKey
+from sqlalchemy.types import Float, Integer, Text
 
 from tropofy.app import AppWithDataSets, Step, StepGroup
 from tropofy.database.tropofy_orm import DataSetMixin
@@ -14,6 +12,21 @@ class Store(DataSetMixin):
     name = Column(Text, nullable=False, unique=True)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
+
+
+class Performance(DataSetMixin):
+    store_name = Column(
+        Text,
+        ForeignKey(
+            'store.name',
+            ondelete='CASCADE',
+            onupdate='CASCADE'
+        ),
+        nullable=False
+    )
+    year = Column(Integer, nullable=False)
+    sales = Column(Float, nullable=False)
+    expenses = Column(Float, nullable=False)
 
 
 class MyKMLMap(KMLMap):
@@ -38,6 +51,15 @@ class MyFirstApp(AppWithDataSets):
                 name='Stores',
                 steps=[
                     Step(name='stored', widgets=[SimpleGrid(Store)])
+                ]
+            ),
+            StepGroup(
+                name='Performances',
+                steps=[
+                    Step(
+                        name='Performances',
+                        widgets=[SimpleGrid(Performance)]
+                    )
                 ]
             ),
             StepGroup(
