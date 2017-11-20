@@ -1,3 +1,4 @@
 *.db
 *.egg*
 *.pyc
+keys.py
