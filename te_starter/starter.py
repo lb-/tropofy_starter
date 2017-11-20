@@ -1,6 +1,6 @@
 from simplekml import Kml
 
-from sqlalchemy.schema import Column, ForeignKeyConstraint, UniquenessConstraint
+from sqlalchemy.schema import Column, ForeignKeyConstraint, UniqueConstraint
 from sqlalchemy.types import Float, Integer, Text
 
 from tropofy.app import AppWithDataSets, Step, StepGroup
@@ -15,7 +15,7 @@ class Store(DataSetMixin):
 
     @classmethod
     def get_table_args(cls):
-        return (UniquenessConstraint('name', 'data_set_id'))
+        return (UniqueConstraint('name', 'data_set_id'),)
 
 
 class Performance(DataSetMixin):
@@ -27,7 +27,7 @@ class Performance(DataSetMixin):
     @classmethod
     def get_table_args(cls):
         return (
-            UniquenessConstraint(
+            UniqueConstraint(
                 'store_name',
                 'year',
                 'data_set_id'
