@@ -102,26 +102,20 @@ class MyFirstApp(AppWithDataSets):
         return 'Starter App'
 
     def get_gui(self):
-        return [
-            StepGroup(
-                name='Stores',
-                steps=[
-                    Step(name='stored', widgets=[SimpleGrid(Store)])
-                ]
-            ),
-            StepGroup(
-                name='Performances',
-                steps=[
-                    Step(
-                        name='Performances',
-                        widgets=[SimpleGrid(Performance)]
-                    )
-                ]
-            ),
-            StepGroup(
-                name='Map',
-                steps=[
-                    Step(name='Map', widgets=[MyKMLMap()])
-                ]
-            )
-        ]
+        step_groups = []
+
+        step_group_1 = StepGroup(name='Input')
+        step_group_1.add_step(
+            Step(name='Stores', widgets=[SimpleGrid(Store)]))
+        step_group_1.add_step(
+            Step(name='Performances', widgets=[SimpleGrid(Performance)]))
+        step_groups.append(step_group_1)
+
+        step_group_2 = StepGroup(name='Output')
+        step_group_2.add_step(
+            Step(name='Map', widgets=[MyKMLMap()]))
+        step_group_2.add_step(
+            Step(name='Chart', widgets=[PeformanceBarChart()]))
+        step_groups.append(step_group_2)
+
+        return step_groups
