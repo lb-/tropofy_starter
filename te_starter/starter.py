@@ -5,7 +5,7 @@ from sqlalchemy.types import Float, Integer, Text
 
 from tropofy.app import AppWithDataSets, Step, StepGroup
 from tropofy.database.tropofy_orm import DataSetMixin
-from tropofy.widgets import KMLMap, SimpleGrid
+from tropofy.widgets import Chart, KMLMap, SimpleGrid
 
 
 class PeformanceBarChart(Chart):
