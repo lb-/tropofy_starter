@@ -28,6 +28,7 @@ class StoreExpensesPieChart(Chart):
                 'store': store.name,
                 'expenses': sum(p.expenses for p in performances)
             })
+        return results
 
     def get_column_ordering(self, app_session):
         return ['store', 'expenses']
