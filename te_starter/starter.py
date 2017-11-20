@@ -144,6 +144,9 @@ class Application(AppWithDataSets):
     def get_name(self):
         return 'Franchise Management'
 
+    def get_examples(self):
+        return {'Demo Data for Brisbane North': self.load_example_data}
+
     def get_gui(self):
         step_groups = []
 
@@ -165,3 +168,21 @@ class Application(AppWithDataSets):
         )
 
         return step_groups
+
+    @staticmethod  # to ensure self does not get passed in
+    def load_example_data(app_session):
+        app_session.data_set.add_all([
+            Store(name="CLAYFIELD", latitude=-27.417536, longitude=153.056677),
+            Store(name="SANDGATE", latitude=-27.321538, longitude=153.069267)
+        ])
+
+        app_session.data_set.add_all([
+            Performance(
+                store_name="CLAYFIELD", year=2011, sales=1000, expenses=400),
+            Performance(
+                store_name="CLAYFIELD", year=2012, sales=1170, expenses=460),
+            Performance(
+                store_name="SANDGATE", year=2011, sales=660, expenses=1120),
+            Performance(
+                store_name="SANDGATE", year=2012, sales=1030, expenses=540),
+        ])
