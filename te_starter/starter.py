@@ -8,6 +8,39 @@ from tropofy.database.tropofy_orm import DataSetMixin
 from tropofy.widgets import Chart, KMLMap, SimpleGrid
 
 
+class StoreExpensePieChart(Chart):
+    def get_chart_type(self, app_session):
+        return Chart.PIECHART
+
+    def get_table_schema(self, app_session):
+        return {
+            'store': ('string', 'Store'),
+            'expenses': ('number', 'expenses'),
+        }
+
+    def get_table_data(self, app_session):
+        results = []
+        stores = app_session.data_set.query(Store).all()
+        for store in stores:
+            performances = app_session.data_set.query(
+                Performance).filter_by(store_name=store.name).all()
+            results.append({
+                'store': store.name,
+                'expenses': sum(p.expenses for p in performances)
+            })
+
+    def get_column_ordering(self, app_session):
+        return ['store', 'expenses']
+
+    def get_chart_options(self, app_session):
+        total_expense = sum(
+            p.expenses for p in app_session.data_set.query(Performance).all()
+        )
+        title = 'Company Expenses: Total = ${expense}'.format(
+            expense=str(total_expense))
+        return {'title': title}
+
+
 class PeformanceBarChart(Chart):
     def get_chart_type(self, app_session):
         return Chart.BARCHART
@@ -122,8 +155,7 @@ class Application(AppWithDataSets):
 
         step_groups.append(
             make_step_group('Output', [
-                ('Viz', [SimpleGrid(Store), PeformanceBarChart()]),
-                ('Performances', [SimpleGrid(Performance)])
+                ('Viz', [SimpleGrid(Store), PeformanceBarChart()])
             ])
         )
 
