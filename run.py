@@ -1,4 +1,9 @@
+import keys
+
 import pkg_resources
+
+from tropofy import main as tropofy_main, serve_app_cascade
+
 apps_config = {
     'tropofy': {
         'api_url': 'https://api.tropofy.com',
@@ -12,15 +17,13 @@ apps_config = {
             'module': 'te_starter',
             'classname': 'MyFirstApp',
             'config': {
-                'key.public': 'PUBLIC_KEY_HERE',
-                'key.private': 'PRIVATE_KEY_HERE'
+                'key.public': keys.public,
+                'key.private': keys.private,
             }
         }
     ]
 }
 
-
-from tropofy import main as tropofy_main, serve_app_cascade
 
 tropofy_app = tropofy_main(apps_config)
 
