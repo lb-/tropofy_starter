@@ -1,6 +1,6 @@
 from simplekml import Kml
 
-from sqlalchemy.schema import Column, ForeignKey
+from sqlalchemy.schema import Column, ForeignKeyConstraint, UniquenessConstraint
 from sqlalchemy.types import Float, Integer, Text
 
 from tropofy.app import AppWithDataSets, Step, StepGroup
@@ -9,24 +9,36 @@ from tropofy.widgets import KMLMap, SimpleGrid
 
 
 class Store(DataSetMixin):
-    name = Column(Text, nullable=False, unique=True)
+    name = Column(Text, nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
 
+    @classmethod
+    def get_table_args(cls):
+        return (UniquenessConstraint('name', 'data_set_id'))
+
 
 class Performance(DataSetMixin):
-    store_name = Column(
-        Text,
-        ForeignKey(
-            'store.name',
-            ondelete='CASCADE',
-            onupdate='CASCADE'
-        ),
-        nullable=False
-    )
+    store_name = Column(Text, nullable=False)
     year = Column(Integer, nullable=False)
     sales = Column(Float, nullable=False, default=0)
     expenses = Column(Float, nullable=False, default=0)
+
+    @classmethod
+    def get_table_args(cls):
+        return (
+            UniquenessConstraint(
+                'store_name',
+                'year',
+                'data_set_id'
+            ),
+            ForeignKeyConstraint(
+                ['store_name', 'data_set_id'],
+                ['store.name', 'store.data_set_id'],
+                ondelete='CASCADE',
+                onupdate='CASCADE',
+            ),
+        )
 
 
 class MyKMLMap(KMLMap):
