@@ -8,6 +8,15 @@ from tropofy.database.tropofy_orm import DataSetMixin
 from tropofy.widgets import Chart, KMLMap, SimpleGrid
 
 
+def make_step_group(name, steps):
+    """Make group where steps are an array of tuples with name, widgets."""
+    step_group = StepGroup(name=name)
+    for step in steps:
+        step_name, step_widgets = step
+        step_group.add_step(Step(name=step_name, widgets=step_widgets))
+    return step_group
+
+
 class StoreExpensesPieChart(Chart):
     def get_chart_type(self, app_session):
         return Chart.PIECHART
@@ -129,15 +138,6 @@ class MyKMLMap(KMLMap):
                 coords=[(store.longitude, store.latitude)]
             )
         return kml.kml()
-
-
-def make_step_group(name, steps):
-    """Make group where steps are an array of tuples with name, widgets."""
-    step_group = StepGroup(name=name)
-    for step in steps:
-        step_name, step_widgets = step
-        step_group.add_step(Step(name=step_name, widgets=step_widgets))
-    return step_group
 
 
 class Application(AppWithDataSets):
