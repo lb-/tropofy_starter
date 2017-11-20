@@ -11,12 +11,15 @@ WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
 """
 
-from sqlalchemy.types import Text, Float
-from sqlalchemy.schema import Column
-from tropofy.database.tropofy_orm import DataSetMixin
-from tropofy.app import AppWithDataSets, Step, StepGroup
-from tropofy.widgets import SimpleGrid
 from collections import OrderedDict
+
+from sqlalchemy.schema import Column
+from sqlalchemy.types import Float, Text
+
+from tropofy.app import AppWithDataSets, Step, StepGroup
+from tropofy.database.tropofy_orm import DataSetMixin
+from tropofy.widgets import SimpleGrid
+
 
 class Store(DataSetMixin):
     name = Column(Text)
