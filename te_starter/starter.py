@@ -97,25 +97,34 @@ class MyKMLMap(KMLMap):
         return kml.kml()
 
 
-class MyFirstApp(AppWithDataSets):
+def make_step_group(name, steps):
+    """Make group where steps are an array of tuples with name, widgets."""
+    step_group = StepGroup(name=name)
+    for step in steps:
+        step_name, step_widgets = step
+        step_group.add_step(Step(name=step_name, widgets=step_widgets))
+    return step_group
+
+
+class Application(AppWithDataSets):
     def get_name(self):
-        return 'Starter App'
+        return 'Franchise Management'
 
     def get_gui(self):
         step_groups = []
 
-        step_group_1 = StepGroup(name='Input')
-        step_group_1.add_step(
-            Step(name='Stores', widgets=[SimpleGrid(Store)]))
-        step_group_1.add_step(
-            Step(name='Performances', widgets=[SimpleGrid(Performance)]))
-        step_groups.append(step_group_1)
+        step_groups.append(
+            make_step_group('Input', [
+                ('Stores', [SimpleGrid(Store)]),
+                ('Performances', [SimpleGrid(Performance)])
+            ])
+        )
 
-        step_group_2 = StepGroup(name='Output')
-        step_group_2.add_step(
-            Step(name='Map', widgets=[MyKMLMap()]))
-        step_group_2.add_step(
-            Step(name='Chart', widgets=[PeformanceBarChart()]))
-        step_groups.append(step_group_2)
+        step_groups.append(
+            make_step_group('Output', [
+                ('Viz', [SimpleGrid(Store), PeformanceBarChart()]),
+                ('Performances', [SimpleGrid(Performance)])
+            ])
+        )
 
         return step_groups

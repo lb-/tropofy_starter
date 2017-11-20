@@ -1,7 +1,5 @@
 import keys
 
-import pkg_resources
-
 from tropofy import main as tropofy_main, serve_app_cascade
 
 apps_config = {
@@ -15,7 +13,7 @@ apps_config = {
     'apps': [
         {
             'module': 'te_starter',
-            'classname': 'MyFirstApp',
+            'classname': 'Application',
             'config': {
                 'key.public': keys.public,
                 'key.private': keys.private,
