@@ -8,7 +8,7 @@ from tropofy.database.tropofy_orm import DataSetMixin
 from tropofy.widgets import Chart, KMLMap, SimpleGrid
 
 
-class StoreExpensePieChart(Chart):
+class StoreExpensesPieChart(Chart):
     def get_chart_type(self, app_session):
         return Chart.PIECHART
 
@@ -155,7 +155,11 @@ class Application(AppWithDataSets):
 
         step_groups.append(
             make_step_group('Output', [
-                ('Viz', [SimpleGrid(Store), PeformanceBarChart()])
+                ('Viz', [
+                    {'widget': PeformanceBarChart(), 'cols': 6},
+                    {'widget': StoreExpensesPieChart(), 'cols': 6},
+                    {'widget': MyKMLMap(), 'cols': 12}
+                ])
             ])
         )
 
